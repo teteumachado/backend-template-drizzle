@@ -1,6 +1,7 @@
 import { FastifyTypedInstance } from '@/types'
-import { Database } from '@/utils/database'
 import { AuthMiddleware } from '../auth/middleware'
+import { Database } from '@/database'
+import { users } from '@/database/schema'
 
 export const ViewUsers = async (app: FastifyTypedInstance) => {
   app.route({
@@ -12,8 +13,8 @@ export const ViewUsers = async (app: FastifyTypedInstance) => {
       description: 'Create a new user without provider.'
     },
     handler: async (request, reply) => {
-      const users = await Database.user.findMany()
-      return reply.send(users)
+      const usersList = await Database.select().from(users)
+      return reply.send(usersList)
     }
   })
 }

@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import { User } from './database'
 
 export type Jwt = {
   scope: 'user',

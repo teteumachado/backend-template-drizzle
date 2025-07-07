@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { fastify } from 'fastify'
 import { fastifyCors } from '@fastify/cors'
 import { validatorCompiler, serializerCompiler, type ZodTypeProvider, jsonSchemaTransform } from 'fastify-type-provider-zod'
@@ -36,6 +37,7 @@ app.after(() => {
   app.register(routes)
 })
 
-app.listen({ port: 3333 }, () => {
-  console.log('HTTP server running!')
+app.listen({ port: 3333 }).then(() => console.log('HTTP server running!')).catch((err) => {
+  console.error('Erro ao iniciar o servidor:', err)
+  process.exit(1)
 })

@@ -1,7 +1,9 @@
+import { Database } from '@/database'
+import { accounts, users } from '@/database/schema'
 import { FastifyTypedInstance } from '@/types'
-import { Database } from '@/utils/database'
-import { Providers } from '@prisma/client'
+
 import { CreateHash } from '@/utils/password'
+import { eq } from 'drizzle-orm'
 import z from 'zod/v4'
 
 export const CreateUser = async (app: FastifyTypedInstance) => {
@@ -20,46 +22,26 @@ export const CreateUser = async (app: FastifyTypedInstance) => {
     handler: async (request, reply) => {
       const { name, email, password } = request.body
 
-      const findUser = await Database.user.findUnique({
-        where: {
-          email
-        }
-      })
+      const findUser = await Database.select().from(users).where(eq(users.email, email))
+      if (findUser[0]) return reply.status(400).send({ error: 'User already exists' })
 
-      if (findUser) return reply.status(400).send({ error: 'User already exists' })
-
-      const createdUser = await Database.user.create({
-        data: {
-          name,
-          email
-        }
-      })
+      const createdUser = await Database.insert(users).values({ name, email }).returning()
       if (!createdUser) return reply.status(500).send({ error: 'Failed to create user' })
 
       const hashedPassword = await CreateHash(password)
-      const createdAccount = await Database.account.create({
-        data: {
-          userId: createdUser.id,
-          provider: Providers.EMAIL,
-          password: hashedPassword
-        }
-      })
+      const createdAccount = await Database.insert(accounts).values({ userId: createdUser[0].id, provider: 'EMAIL', password: hashedPassword })
 
       if (!createdAccount) {
-        await Database.user.delete({
-          where: {
-            id: createdUser.id
-          }
-        })
+        await Database.delete(users).where(eq(users.id, createdUser[0].id))
         return reply.status(500).send({ error: 'Failed to create account' })
       }
 
       return reply.status(201).send({
         message: 'User created successfully',
         user: {
-          id: createdUser.id,
-          name: createdUser.name,
-          email: createdUser.email
+          id: createdUser[0].id,
+          name: createdUser[0].name,
+          email: createdUser[0].email
         }
       })
     }
