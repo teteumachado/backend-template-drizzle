@@ -3,6 +3,7 @@ import { fastifyCors } from '@fastify/cors'
 import { validatorCompiler, serializerCompiler, type ZodTypeProvider, jsonSchemaTransform } from 'fastify-type-provider-zod'
 import { fastifySwagger } from '@fastify/swagger'
 import { fastifySwaggerUi } from '@fastify/swagger-ui'
+import fastifyJwt from '@fastify/jwt'
 import { routes } from '@/routes'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -11,6 +12,9 @@ app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
 
 app.register(fastifyCors, { origin: '*' })
+app.register(fastifyJwt, {
+  secret: process.env.AUTH_SECRET!
+})
 
 app.register(fastifySwagger, {
   mode: 'dynamic',
