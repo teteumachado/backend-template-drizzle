@@ -5,7 +5,8 @@ import { validatorCompiler, serializerCompiler, type ZodTypeProvider, jsonSchema
 import { fastifySwagger } from '@fastify/swagger'
 import { fastifySwaggerUi } from '@fastify/swagger-ui'
 import fastifyJwt from '@fastify/jwt'
-import { routes } from '@/routes'
+import { AuthController } from './modules/auth'
+import { UsersController } from './modules/users'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -34,7 +35,8 @@ app.register(fastifySwaggerUi, {
 })
 
 app.after(() => {
-  app.register(routes)
+  app.register(AuthController, { prefix: '/auth' })
+  app.register(UsersController, { prefix: '/users' })
 })
 
 app.listen({ port: 3333 }).then(() => console.log('HTTP server running!')).catch((err) => {

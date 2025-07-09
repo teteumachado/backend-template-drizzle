@@ -20,7 +20,8 @@ export default [
       'array-bracket-spacing': ['error', 'never'],
       'indent': ['error', 2],
       'no-trailing-spaces': 'error',
-      'eol-last': ['error', 'always']
+      'eol-last': ['error', 'always'],
+      '@typescript-eslint/no-namespace': 'off'
     }
   }
 ]
