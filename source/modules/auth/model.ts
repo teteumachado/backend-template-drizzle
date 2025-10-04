@@ -14,6 +14,7 @@ import { z } from 'zod/v4'
 export namespace AuthModel {
   // Database schema
   export const providersEnum = pgEnum('providers', ['EMAIL'])
+  export const rolesEnum = pgEnum('roles', ['USER', 'ADMIN', 'SUPER_ADMIN'])
 
   export const users = pgTable('users', {
     id: uuid('id').primaryKey().defaultRandom(),
@@ -21,6 +22,7 @@ export namespace AuthModel {
     email: varchar('email', { length: 255 }).notNull(),
     emailVerified: boolean('email_verified').notNull().default(false),
     image: text('image'),
+    role: rolesEnum('role').notNull().default('USER'),
     createdAt: timestamp('created_at', { mode: 'date' }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { mode: 'date' }).notNull().$onUpdate(() => new Date())
   },
