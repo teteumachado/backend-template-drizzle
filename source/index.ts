@@ -7,6 +7,7 @@ import { fastifySwaggerUi } from '@fastify/swagger-ui'
 import fastifyJwt from '@fastify/jwt'
 import { AuthController } from './modules/auth'
 import { UsersController } from './modules/users'
+import { TestsController } from './modules/tests'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
