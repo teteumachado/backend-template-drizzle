@@ -15,7 +15,7 @@ app.setSerializerCompiler(serializerCompiler)
 
 app.register(fastifyCors, { origin: '*' })
 app.register(fastifyJwt, {
-  secret: process.env.AUTH_SECRET!
+  secret: process.env.PRIVATE_KEY!
 })
 
 app.register(fastifySwagger, {
