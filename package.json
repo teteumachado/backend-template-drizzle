@@ -26,12 +26,14 @@
     "@fastify/jwt": "^9.1.0",
     "@fastify/swagger": "^9.5.1",
     "@fastify/swagger-ui": "^5.2.3",
+    "@types/redis": "^4.0.11",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.0.1",
     "drizzle-orm": "^0.44.2",
     "fastify": "^5.4.0",
     "fastify-type-provider-zod": "^5.0.1",
     "pg": "^8.16.3",
+    "redis": "^5.8.3",
     "zod": "^3.25.68"
   }
 }
