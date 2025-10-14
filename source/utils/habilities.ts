@@ -8,7 +8,7 @@ export const ROLES = {
   ADMIN: [
     'view:leads'
   ],
-  MEMBER: []
+  USER: []
 } as const
 
 export const hasHabilitie = (role: Role, habilities: Habilitie[]) => {
