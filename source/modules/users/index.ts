@@ -1,5 +1,5 @@
 import { FastifyTypedInstance } from '@/types'
-import { AuthMiddleware } from '@/modules/auth/middleware'
+import { HasHabilitieMiddleware } from '@/modules/auth/middleware'
 import { UsersService } from './service'
 import { UsersModel } from './model'
 import { ServiceError } from '@/utils/error'
@@ -8,7 +8,7 @@ export const UsersController = async (app: FastifyTypedInstance) => {
   app.route({
     method: 'GET',
     url: '/',
-    preHandler: [AuthMiddleware(app)],
+    preHandler: [HasHabilitieMiddleware(app, ['manage:leads', 'view:leads'])],
     schema: {
       tags: ['users'],
       description: 'List of users.'
