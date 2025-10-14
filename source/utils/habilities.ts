@@ -12,7 +12,7 @@ export const ROLES = {
 } as const
 
 export const hasHabilitie = (role: Role, habilities: Habilitie[]) => {
-  return habilities.every((habilitie) => (ROLES[role] as readonly Habilitie[]).includes(habilitie))
+  return habilities.some((habilitie) => (ROLES[role] as readonly Habilitie[]).includes(habilitie))
 }
 
 export const hasManyHabilties = (role: Role, habilities: Habilitie[]) => {
