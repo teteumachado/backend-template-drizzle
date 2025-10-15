@@ -1,8 +1,10 @@
 import { InferSelectModel, InferInsertModel } from 'drizzle-orm'
-import { users, accounts, providersEnum } from '@/database/schema'
+import { users, accounts, providersEnum, rolesEnum } from '@/database/schema'
+import { createSelectSchema } from 'drizzle-zod'
 
 // Types for selecting data
 export type User = InferSelectModel<typeof users>
+export const RolesEnum = createSelectSchema(rolesEnum)
 export type Account = InferSelectModel<typeof accounts>
 
 // Types for inserting data

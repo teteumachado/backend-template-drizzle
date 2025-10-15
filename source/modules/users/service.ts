@@ -7,6 +7,7 @@ import { eq } from 'drizzle-orm'
 import { ServiceError } from '@/utils/error'
 import { redis } from '@/database/redis'
 import { decrypt, encrypt } from '@/utils/encrypt'
+import { Role } from '@/utils/habilities'
 
 
 export abstract class UsersService {
@@ -44,5 +45,12 @@ export abstract class UsersService {
     const userRole = findUserRole[0].role
     await redis.set(`role_${userId}`, encrypt(userRole))
     return userRole
+  }
+
+  static async updateUserRole(userId: string, role: Role) {
+    const updatedUser = await Database.update(users).set({ role }).where(eq(users.id, userId)).returning()
+    if (!updatedUser[0]) throw new ServiceError({ code: 404, message: 'User not found.' })
+    await redis.set(`role_${userId}`, encrypt(role))
+    return updatedUser[0]
   }
 }

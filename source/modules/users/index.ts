@@ -46,4 +46,35 @@ export const UsersController = async (app: FastifyTypedInstance) => {
       }
     }
   })
+
+  app.route({
+    method: 'POST',
+    url: '/update/role/:userId',
+    preHandler: [HasHabilitieMiddleware(app, ['manage:roles'])],
+    schema: {
+      tags: ['users'],
+      description: 'Create a new user without provider.',
+      body: UsersModel.updateRoleBody,
+      params: UsersModel.updateRoleParams
+    },
+    handler: async (request, reply) => {
+      try {
+        const updatedUser = await UsersService.updateUserRole(request.params.userId, request.body.role)
+        return reply.send({
+          message: 'User role updated successfully.',
+          user: {
+            id: updatedUser.id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            role: updatedUser.role
+          }
+        })
+      } catch(error) {
+        if (error instanceof ServiceError) {
+          return reply.status(error.code).send({ message: error.message })
+        }
+        return reply.status(500).send({ message: 'Internal server error.' })
+      }
+    }
+  })
 }

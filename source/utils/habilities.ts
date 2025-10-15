@@ -3,6 +3,7 @@ export type Habilitie = (typeof ROLES)[Role][number]
 
 export const ROLES = {
   SUPER_ADMIN: [
+    'manage:roles',
     'manage:leads'
   ],
   ADMIN: [
