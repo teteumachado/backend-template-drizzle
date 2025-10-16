@@ -10,6 +10,9 @@ export namespace UsersModel {
   })
 
   // Request params
+  export const findUserParams = z.object({
+    userId: z.string().uuid()
+  })
   export const updateRoleParams = z.object({
     userId: z.string().uuid()
   })

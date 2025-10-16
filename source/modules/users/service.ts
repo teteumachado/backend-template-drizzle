@@ -34,6 +34,12 @@ export abstract class UsersService {
     return usersList
   }
 
+  static async findUser(userId: string) {
+    const user = await Database.select().from(users).where(eq(users.id, userId))
+    if (!user[0]) throw new ServiceError({ code: 404, message: 'User not found.' })
+    return user[0]
+  }
+
   static async getUserRole(userId: string) {
     const findEncryptedRole = await redis.get(`role_${userId}`)
     if (findEncryptedRole) {

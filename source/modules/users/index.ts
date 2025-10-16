@@ -18,7 +18,21 @@ export const UsersController = async (app: FastifyTypedInstance) => {
       return reply.send(usersList)
     }
   })
-
+  app.route({
+    method: 'GET',
+    url: '/:userId',
+    preHandler: [HasHabilitieMiddleware(app, ['manage:leads', 'view:leads'])],
+    schema: {
+      tags: ['users'],
+      description: 'Get a user by ID.',
+      params: UsersModel.findUserParams
+    },
+    handler: async (request, reply) => {
+      const { userId } = request.params
+      const user = await UsersService.findUser(userId)
+      return reply.send(user)
+    }
+  })
   app.route({
     method: 'POST',
     url: '/',
