@@ -34,6 +34,22 @@ export const UsersController = async (app: FastifyTypedInstance) => {
     }
   })
   app.route({
+    method: 'PUT',
+    url: '/:userId',
+    preHandler: [HasHabilitieMiddleware(app, ['manage:leads'])],
+    schema: {
+      tags: ['users'],
+      description: 'Update a user by ID.',
+      params: UsersModel.findUserParams,
+      body: UsersModel.updateUserBody
+    },
+    handler: async (request, reply) => {
+      const { userId } = request.params
+      const updatedUser = await UsersService.updateUser(userId, request.body)
+      return reply.send(updatedUser)
+    }
+  })
+  app.route({
     method: 'POST',
     url: '/',
     schema: {

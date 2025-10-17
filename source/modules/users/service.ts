@@ -40,6 +40,12 @@ export abstract class UsersService {
     return user[0]
   }
 
+  static async updateUser(userId: string, { name }: z.infer<typeof UsersModel.updateUserBody>) {
+    const updatedUser = await Database.update(users).set({ name }).where(eq(users.id, userId)).returning()
+    if (!updatedUser[0]) throw new ServiceError({ code: 404, message: 'User not found.' })
+    return updatedUser[0]
+  }
+
   static async getUserRole(userId: string) {
     const findEncryptedRole = await redis.get(`role_${userId}`)
     if (findEncryptedRole) {
