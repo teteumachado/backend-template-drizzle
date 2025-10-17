@@ -76,14 +76,13 @@ export const UsersController = async (app: FastifyTypedInstance) => {
       }
     }
   })
-
   app.route({
-    method: 'POST',
-    url: '/update/role/:userId',
+    method: 'PUT',
+    url: '/:userId/role',
     preHandler: [HasHabilitieMiddleware(app, ['manage:roles'])],
     schema: {
       tags: ['users'],
-      description: 'Create a new user without provider.',
+      description: 'Update a user role.',
       body: UsersModel.updateRoleBody,
       params: UsersModel.updateRoleParams
     },

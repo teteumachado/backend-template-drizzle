@@ -247,7 +247,7 @@ This project follows:
 
 ### Security Notes
 
-⚠️ **Important**: 
+⚠️ **Important**:
 - Never commit `.env` files to version control
 - Use strong, unique passwords in production
 - Rotate JWT secrets regularly
@@ -337,8 +337,8 @@ Features:
 | `GET` | `/users` | List all users | ✅ |
 | `GET` | `/users/:id` | Get user by ID | ✅ |
 | `PUT` | `/users/:id` | Update user | ✅ |
+| `PUT` | `/users/:id/role` | Update user role | ✅ |
 | `DELETE` | `/users/:id` | Delete user | ✅ |
-| `GET` | `/users/me` | Get current user | ✅ |
 
 ---
 
